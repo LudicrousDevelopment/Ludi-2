@@ -10,7 +10,7 @@ $('#alloy-init').click(() => {
 $('#smoke-init').click(() => {
   $('#bg-p')[0].src = ''
   alert('Soon')
-})
+}) 
 
 var xor = (str,key)=>(str.split('').map((char,ind)=>ind%key?String.fromCharCode(char.charCodeAt()^key):char).join(''));
 
