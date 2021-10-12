@@ -16,10 +16,10 @@ var xor = (str,key)=>(str.split('').map((char,ind)=>ind%key?String.fromCharCode(
 
 $('#corro-init').click(() => {
   $('#bg-p')[0].src = ''
-  if (!$('#main-input').val().startsWith('https://')) {
-    $('#bg-p')[0].src = 'https://'+window.location.host+'/service/'+encodeURIComponent(xor('https://google.com/search?q='+$('#main-input').val(), '2')); return $('#bg-p').fadeIn('fast');
+  if (!$('#main-input').val().startsWith('http')) {
+    $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/service/'+encodeURIComponent(xor('https://google.com/search?q='+$('#main-input').val(), '2')); return $('#bg-p').fadeIn('fast');
   }
-  $('#bg-p')[0].src = 'https://pr.'+window.location.host+'/service/'+encodeURIComponent(xor($('#main-input').val(), '2'))
+  $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/service/'+encodeURIComponent(xor($('#main-input').val(), '2'))
   $('#bg-p').fadeIn('fast');
 })
 
@@ -64,3 +64,11 @@ window.alert2 = function(param) {
 }
 
 alert2('ask me for new domains they get blocked')
+
+var interval = setInterval(() => {
+  try {$('#arc-widget-launcher-iframe')[0].contentWindow.document.querySelector('#launcher').style.background = 'linear-gradient(238deg, #3baeff 1%, #587cff 100%)';clearInterval(interval)} catch(err) {console.log()}
+}, 5)
+
+$('#bg-p')[0].onload = function() {
+  $('#bg-p')[0].contentWindow.document.querySelectorAll('a[target]').forEach((node) => {node.target = '_self'})
+}
