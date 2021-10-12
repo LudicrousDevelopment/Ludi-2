@@ -1,9 +1,9 @@
 $('#alloy-init').click(() => {
   $('#bg-p')[0].src = ''
-  if (!$('#main-input').val().startsWith('https://')) {
-    $('#bg-p')[0].src = 'https://'+window.location.host+'/prox/?url='+btoa('https://google.com/search?q='+$('#main-input').val(), '2'); return $('#bg-p').fadeIn('fast');
+  if (!$('#main-input').val().startsWith('http')) {
+    $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/prox/?url='+btoa('https://google.com/search?q='+$('#main-input').val(), '2'); return $('#bg-p').fadeIn('fast');
   }
-  $('#bg-p')[0].src = 'https://'+window.location.host+'/prox?url='+btoa($('#main-input').val())
+  $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/prox?url='+btoa($('#main-input').val())
   $('#bg-p').fadeIn('fast');
 })
 
@@ -54,3 +54,5 @@ if (localStorage['icon']) {
   link.rel = 'icon'
   document.head.appendChild(link)
 }
+
+$('#smoke-init').click(() => {alert('Soon')})
