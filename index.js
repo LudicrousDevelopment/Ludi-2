@@ -34,7 +34,7 @@ app.get('*', (req, res) => {
       req.query.url = 'https://google.com/search?q='+req.query.url
     }
     new URL(req.query.url) ? res.redirect(prefix + btoa(req.query.url)) : (atob(req.query.url) ? res.redirect(prefix + btoa(req.query.url)) : res.end("URL Parse Error"))
-  } else if (req.url.startsWith(prefix)) {return Smoke.request(req, res)} else if (req.url.startsWith(alloyprefix)) {
+  } else/* if (req.url.startsWith(prefix)) {return Smoke.request(req, res)} else*/ if (req.url.startsWith(alloyprefix)) {
     return Alloy.http(req, res)
   } else if (req.query.url && (req.pathname == '/prox' || req.pathname == '/prox/' || req.pathname == '/session' || req.pathname == '/session/')) {
     var url = atob(req.query.url);
