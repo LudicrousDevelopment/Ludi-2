@@ -55,4 +55,12 @@ if (localStorage['icon']) {
   document.head.appendChild(link)
 }
 
-$('#smoke-init').click(() => {alert('Soon')})
+window.alert2 = function(param) {
+  var elem = document.createElement('div')
+  elem.style = "position: fixed;border-left:0px;border-right:0px;width:100%;margin:auto;top:30px;background:transparent;border-style: solid;border-bottom: 1px solid #fff;border-top:1px solid #fff;display:flex;justify-content:center;align-items:center;box-shadow:0px 0px 10px 0px #fff;padding:20px;color:white;font-size:20px;cursor:pointer;"
+  elem.innerText = param
+  elem.setAttribute('onclick', '(() => {this.remove()})()')
+  document.body.insertAdjacentElement('afterBegin', elem)
+}
+
+alert2('ask me for new domains they get blocked')
