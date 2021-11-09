@@ -17,14 +17,10 @@ const Corrosion = new (require('./lib/server'))({
 })
 
 app.use(bodyParser.json())
-app.use(express.static('./public'))
+app.use(express.static('./public', {extensions: ['html']}))
 const server = require('http').createServer(app)
 
-app.get('/', (req, res) => {
-  res.sendFile('index.html', {root: './public'})
-});
-
-app.get('*', (req, res) => {
+app.all('*', (req, res) => {
   req.headers.useragent === 'googlebot' && r.writeHead(403).end();
   req.pathname = req.url.split('#')[0].split('?')[0];
   req.query = {};
@@ -47,10 +43,14 @@ app.get('*', (req, res) => {
   } else if (req.url.startsWith(Corrosion.prefix)) {return Corrosion.request(req, res)} else {
     res.redirect('/')
   }
-}).post('*', (req, res) => {
-  if (req.url.startsWith(prefix)) return Smoke.post(req, res)
 })
 
-server.listen(process.env.PORT || port, () => {
+var https = require('http').Server(app)
+
+https.on('request', (req, res) => {
+  if (req.url.startsWith(Corrosion.prefix)) return Corrosion.request(req, res)
+}).on('upgrade', (req, socket, head) => Corrosion.upgrade(req, socket, head))
+
+https.listen(process.env.PORT || port, () => {
   console.log('server started');
 });

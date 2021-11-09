@@ -138,6 +138,26 @@ body {
   color: #fff;
   margin-bottom: 2px;
   outline: none;
+  transition: 0.25s ease;
+}
+
+input[data-autocompleted] {
+  background-color: transparent !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
 }
 
 #main-input::placeholder {
@@ -155,6 +175,15 @@ body {
   border: #fff solid 3px;
   border-radius: 3px;
   width: calc(33% - 4px);
+  transition: 0.25s ease;
+}
+
+.main-input-button:hover {
+  background: rgb(255, 255, 255, 0.1);
+}
+
+#main-input:active, #main-input:hover {
+  background: rgb(255, 255, 255, 0.1);
 }
 
 #settings-placeholder {

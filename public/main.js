@@ -7,9 +7,13 @@ $('#alloy-init').click(() => {
   $('#bg-p').fadeIn('fast');
 })
 
-$('#smoke-init').click(() => {
+$('#pal-init').click(() => {
   $('#bg-p')[0].src = ''
-  alert('Soon')
+  if (!$('#main-input').val().startsWith('http')) {
+    $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/surf/'+encodeURIComponent(xor('https://google.com/search?q='+$('#main-input').val(), '2')); return $('#bg-p').fadeIn('fast');
+  }
+  $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/surf/'+encodeURIComponent(xor($('#main-input').val(), '2'))
+  $('#bg-p').fadeIn('fast');
 }) 
 
 var xor = (str,key)=>(str.split('').map((char,ind)=>ind%key?String.fromCharCode(char.charCodeAt()^key):char).join(''));
@@ -62,8 +66,6 @@ window.alert2 = function(param) {
   elem.setAttribute('onclick', '(() => {this.remove()})()')
   document.body.insertAdjacentElement('afterBegin', elem)
 }
-
-alert2('ask me for new domains they get blocked')
 
 var interval = setInterval(() => {
   try {$('#arc-widget-launcher-iframe')[0].contentWindow.document.querySelector('#launcher').style.background = 'linear-gradient(238deg, #3baeff 1%, #587cff 100%)';clearInterval(interval)} catch(err) {console.log()}
