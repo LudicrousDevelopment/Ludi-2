@@ -9,7 +9,7 @@ atob = str => new Buffer.from(str, 'base64').toString('utf-8')
 btoa = str => new Buffer.from(str, 'utf-8').toString('base64')
 
 const Alloy = new (require('./proxy/alloy/index'))(alloyprefix)
-const Palladium = new (require('./Palladium/lib/server'))({
+const Palladium = new (require('palladiumub'))({
   encode: 'xor',
   ssl: 'true',
   prefix: prefix,
