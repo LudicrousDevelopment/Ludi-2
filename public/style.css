@@ -48,20 +48,29 @@ body {
   margin-bottom: 0;
 }
 
-#frame-close, #frame-reload {
-  float: right;
-  z-index: 999999999999999999999999;
+#frame-btns-over {
   position: absolute;
-  top: 5%;
   display: none;
+  width: 85px;
+  height: min-content;
+  top: 5%;
+  right: 5%;
+  transform: translate(-50%, 0%);
+  z-index: 99999999999999999999999999999999999;
 }
 
-#bg-p:hover + #frame-close, #bg-p:hover + #frame-reload {
-  display: inline;
+#frame-close, #frame-reload {
+  float: left;
+  width: 40px;
+  height: 40px;
+  border: 1px #ffffff solid;
+  background: #2467a5;
+  border-radius: 3px;
+  color: white;
 }
 
-#frame-close:hover, #frame-reload:hover {
-  display: block;
+#frame-reload {
+  margin-right: 5px;
 }
 
 #preferences-container {
@@ -83,14 +92,6 @@ body {
 
 .visible {
   display: block !important;
-}
-
-#frame-close {
-  right: 5%;
-}
-
-#frame-reload {
-  right: 10%;
 }
 
 #main-page-content {

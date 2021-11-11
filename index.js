@@ -12,12 +12,18 @@ const Alloy = new (require('./proxy/alloy/index'))(alloyprefix)
 const Palladium = new (require('./Palladium/lib/server'))({
   encode: 'xor',
   ssl: 'true',
-  prefix: prefix
+  prefix: prefix,
 })
 const Corrosion = new (require('./lib/server'))({
   codec: 'xor',
   forceHttps: true,
-  prefix: '/service/'
+  prefix: '/service/',
+  requestMiddleware: [
+    require('./lib/server').middleware.blacklist([ 
+      'example.org',
+      'example.com',
+    ], 'Page is blocked'),  
+  ],
 })
 
 app.use(bodyParser.json())
