@@ -9,11 +9,11 @@ atob = str => new Buffer.from(str, 'base64').toString('utf-8')
 btoa = str => new Buffer.from(str, 'utf-8').toString('base64')
 
 const Alloy = new (require('./proxy/alloy/index.js'))(alloyprefix)
-const Palladium = new (require('./palladium/server/index.js'))({
+/*const Palladium = new (require('./palladium/server/index.js'))({
   encode: 'xor',
   ssl: 'true',
   prefix: prefix,
-})
+})*/
 const Corrosion = new (require('./lib/server/index.js'))({
   codec: 'xor',
   forceHttps: true,
@@ -34,7 +34,7 @@ app.all('*', (req, res) => {
       req.query.url = 'https://google.com/search?q='+req.query.url
     }
     new URL(req.query.url) ? res.redirect(prefix + btoa(req.query.url)) : (atob(req.query.url) ? res.redirect(prefix + btoa(req.query.url)) : res.end("URL Parse Error"))
-  } else if (req.url.startsWith(prefix)) {return Palladium.request(req, res)} else if (req.url.startsWith(alloyprefix)) {
+  } else/* if (req.url.startsWith(prefix)) {return Palladium.request(req, res)} else*/ if (req.url.startsWith(alloyprefix)) {
     return Alloy.http(req, res)
   } else if (req.query.url && (req.pathname == '/prox' || req.pathname == '/prox/' || req.pathname == '/session' || req.pathname == '/session/')) {
     var url = atob(req.query.url);
@@ -55,8 +55,8 @@ https.on('request', (req, res) => {
   if (req.url.startsWith(Corrosion.prefix)) return Corrosion.request(req, res)
 }).on('upgrade', (req, socket, head) => Corrosion.upgrade(req, socket, head))
 
-Palladium.ws(https);
-Palladium.clientScript();
+//Palladium.ws(https);
+//Palladium.clientScript();
 
 https.listen(process.env.PORT || port, () => {
   console.log('server started');

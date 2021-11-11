@@ -9,13 +9,14 @@ $('#alloy-init').click(() => {
 })
 
 $('#pal-init').click(() => {
-  $('#bg-p')[0].src = ''
+  
+  /*$('#bg-p')[0].src = ''
   $('#frame-btns-over').show()
   if (!$('#main-input').val().startsWith('http')) {
     $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/surf/'+encodeURIComponent(xor('https://google.com/search?q='+$('#main-input').val(), '2')); return $('#bg-p').fadeIn('fast');
   }
   $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/surf/'+encodeURIComponent(xor($('#main-input').val(), '2'))
-  $('#bg-p').fadeIn('fast');
+  $('#bg-p').fadeIn('fast');*/
 }) 
 
 var xor = (str,key)=>(str.split('').map((char,ind)=>ind%key?String.fromCharCode(char.charCodeAt()^key):char).join(''));
@@ -61,6 +62,8 @@ if (localStorage['icon']) {
   link.rel = 'icon'
   document.head.appendChild(link)
 }
+
+alert2('Palladium is currently broken for unknown reasons')
 
 window.alert2 = function(param) {
   var elem = document.createElement('div')
