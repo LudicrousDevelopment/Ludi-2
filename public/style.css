@@ -6,6 +6,8 @@ body {
   background-size: 300%;
   margin: 0;
   width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
   height: 100vh;
   font-family: Roboto, sans-serif;
 }
