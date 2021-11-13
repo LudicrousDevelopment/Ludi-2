@@ -63,8 +63,6 @@ if (localStorage['icon']) {
   document.head.appendChild(link)
 }
 
-alert2('Palladium is currently broken for unknown reasons')
-
 window.alert2 = function(param) {
   var elem = document.createElement('div')
   elem.style = "position: fixed;border-left:0px;border-right:0px;width:100%;margin:auto;top:30px;background:transparent;border-style: solid;border-bottom: 1px solid #fff;border-top:1px solid #fff;display:flex;justify-content:center;align-items:center;box-shadow:0px 0px 10px 0px #fff;padding:20px;color:white;font-size:20px;cursor:pointer;"
@@ -72,6 +70,8 @@ window.alert2 = function(param) {
   elem.setAttribute('onclick', '(() => {this.remove()})()')
   document.body.insertAdjacentElement('afterBegin', elem)
 }
+
+alert2('Palladium is currently broken for unknown reasons')
 
 var interval = setInterval(() => {
   try {$('#arc-widget-launcher-iframe')[0].contentWindow.document.querySelector('#launcher').style.background = 'linear-gradient(238deg, #3baeff 1%, #587cff 100%)';clearInterval(interval)} catch(err) {console.log()}
