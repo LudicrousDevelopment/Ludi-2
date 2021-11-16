@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-var alloy = require('alloyproxy');
+var alloy = require('./alloy/lib');
 
 const {port, prefix, alloyprefix} = require('./config.json');
 
@@ -10,7 +10,7 @@ atob = str => new Buffer.from(str, 'base64').toString('utf-8')
 
 btoa = str => new Buffer.from(str, 'utf-8').toString('base64')
 
-const Alloy = new alloy({prefix:alloyprefix})
+const Alloy = new alloy(alloyprefix)
 /*const Palladium = new (require('./palladium/server/index.js'))({
   encode: 'xor',
   ssl: 'true',
