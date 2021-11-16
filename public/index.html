@@ -281,9 +281,9 @@
         $('#bg-p')[0].src = ''
         $('#frame-btns-over').show()
         if (!$('#main-input').val().startsWith('http')) {
-          $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/prox/?url='+btoa('https://google.com/search?q='+$('#main-input').val(), '2'); return $('#bg-p').fadeIn('fast');
+          $('#bg-p')[0].src = '/prox/?url='+btoa('https://google.com/search?q='+$('#main-input').val(), '2'); return $('#bg-p').fadeIn('fast');
         }
-        $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/prox?url='+btoa($('#main-input').val())
+        $('#bg-p')[0].src = '/prox?url='+btoa($('#main-input').val())
         $('#bg-p').fadeIn('fast');
       })
 
