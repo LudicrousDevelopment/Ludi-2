@@ -23,8 +23,8 @@ module.exports = class {
         if (!req.url.startsWith(this.prefix)) return next();
 
         // Defining alternatives to `req.url` that don't contain web proxy prefix (req.path) and with the additional prop (req.pathname) not containing any hash or query params.
-        req.path = req.url.replace(this.prefix.slice(1), '');
-        req.pathname = req.path.split('#')[0].split('?')[0];
+        if (!req.path) req.path = req.url.replace(this.prefix.slice(1), '');
+        if (!req.pathname) req.pathname = req.path.split('#')[0].split('?')[0];
         
         if (req.pathname == '/client_hook' || req.pathname == '/client_hook/') return res.end(fs.readFileSync(__dirname + '/window.js', 'utf-8'));
     
