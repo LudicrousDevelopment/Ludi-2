@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-var alloy = require('./alloy/lib');
+var alloy = require('./a');
 
 const {port, prefix, alloyprefix} = require('./config.json');
 
