@@ -182,6 +182,7 @@
         border: #fff solid 3px;
         border-radius: 3px;
         width: calc(33% - 4px);
+        cursor: pointer;
         transition: 0.25s ease;
       }
 
@@ -288,14 +289,13 @@
       })
 
       $('#pal-init').click(() => {
-        
-        /*$('#bg-p')[0].src = ''
+        $('#bg-p')[0].src = ''
         $('#frame-btns-over').show()
         if (!$('#main-input').val().startsWith('http')) {
           $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/surf/'+encodeURIComponent(xor('https://google.com/search?q='+$('#main-input').val(), '2')); return $('#bg-p').fadeIn('fast');
         }
         $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/surf/'+encodeURIComponent(xor($('#main-input').val(), '2'))
-        $('#bg-p').fadeIn('fast');*/
+        $('#bg-p').fadeIn('fast');
       }) 
 
       var xor = (str,key)=>(str.split('').map((char,ind)=>ind%key?String.fromCharCode(char.charCodeAt()^key):char).join(''));
@@ -356,9 +356,9 @@
         try {$('#arc-widget-launcher-iframe')[0].contentWindow.document.querySelector('#launcher').style.background = 'linear-gradient(238deg, #3baeff 1%, #587cff 100%)';clearInterval(interval)} catch(err) {console.log()}
       }, 5)
 
-      $('#bg-p')[0].onload = function() {
+      /*$('#bg-p')[0].onload = function() {
         $('#bg-p')[0].contentWindow.document.querySelectorAll('a[target]').forEach((node) => {node.target = '_self'})
-      }
+      }*/
     </script>
     <script>
       /* -----------------------------------------------

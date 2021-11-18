@@ -23,17 +23,17 @@ module.exports = class {
         if (!req.url.startsWith(this.prefix)) return next();
 
         // Defining alternatives to `req.url` that don't contain web proxy prefix (req.path) and with the additional prop (req.pathname) not containing any hash or query params.
-        if (!req.path) req.path = req.url.replace(this.prefix.slice(1), '');
-        if (!req.pathname) req.pathname = req.path.split('#')[0].split('?')[0];
+        req.paths = req.url.replace(this.prefix.slice(1), '');
+        req.pathnames = req.paths.split('#')[0].split('?')[0];
         
-        if (req.pathname == '/client_hook' || req.pathname == '/client_hook/') return res.end(fs.readFileSync(__dirname + '/window.js', 'utf-8'));
+        if (req.pathnames == '/client_hook' || req.pathnames == '/client_hook/') return res.end(fs.readFileSync(__dirname + '/window.js', 'utf-8'));
     
-        try {new URL(this.proxifyRequestURL(req.path, true))} catch {return res.end('URL Parse Error')};
+        try {new URL(this.proxifyRequestURL(req.paths, true))} catch {return res.end('URL Parse Error')};
     
         var proxyURL = {
-            href: this.proxifyRequestURL(req.path, true),
-            origin: this.proxifyRequestURL(req.path, true).split('/').splice(0, 3).join('/'),
-            hostname: this.proxifyRequestURL(req.path, true).split('/').splice(0, 3).slice(2).join('/')
+            href: this.proxifyRequestURL(req.paths, true),
+            origin: this.proxifyRequestURL(req.paths, true).split('/').splice(0, 3).join('/'),
+            hostname: this.proxifyRequestURL(req.paths, true).split('/').splice(0, 3).slice(2).join('/')
         },
             proxify = {},
             isBlocked = false,
@@ -52,7 +52,7 @@ module.exports = class {
         if (typeof this.config.blacklist == 'object' && this.config.blacklist.length != 0) this.config.blacklist.forEach(blacklisted => proxyURL.hostname == blacklisted ? isBlocked = true : isBlocked = false);
         if (isBlocked) return res.end('The URL you are trying to access is not permitted for use.')
 
-        if (!req.path.startsWith(`/_${btoa(proxyURL.origin)}_/`)) return (res.writeHead(308, { location: this.prefix + `_${btoa(proxyURL.origin)}_/`}), res.end(''));
+        if (!req.paths.startsWith(`/_${btoa(proxyURL.origin)}_/`)) return (res.writeHead(308, { location: this.prefix + `_${btoa(proxyURL.origin)}_/`}), res.end(''));
     
         // Proxifying "Origin" request header. Vital since some websites might have a failsafe for their API involving the "Origin" request header.
         if (proxyOptions.headers['origin']) {
