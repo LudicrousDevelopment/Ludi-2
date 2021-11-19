@@ -23,6 +23,8 @@ const Corrosion = new (require('./lib/server/index.js'))({
   prefix: '/service/',
 })
 
+Corrosion.bundleScripts()
+
 var https = require('http').Server()
 
 https.on('upgrade', (req, socket, head) => Corrosion.upgrade(req, socket, head))
@@ -49,9 +51,7 @@ https.on('request', (req, res) => {
 //Palladium.ws(https);
 Palladium.clientScript();
 
-Alloy.ws(https)
-
-Corrosion.bundleScripts()
+//Alloy.ws(https)
 
 https.listen(process.env.PORT || port, () => {
   console.log('server started');
