@@ -46,7 +46,7 @@ https.on('request', (req, res) => {
   res.end(fs.readFileSync('./public/index.html', 'utf-8'))
 })
 
-Palladium.ws(https);
+//Palladium.ws(https);
 Palladium.clientScript();
 
 Alloy.ws(https)
