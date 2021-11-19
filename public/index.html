@@ -57,10 +57,10 @@
       #frame-btns-over {
         position: absolute;
         display: none;
-        width: 85px;
+        width: 90px;
         height: min-content;
-        top: 5%;
-        right: 5%;
+        top: 5vw;
+        right: 5vw;
         transform: translate(-50%, 0%);
         z-index: 99999999999999999999999999999999999;
       }
@@ -69,14 +69,21 @@
         float: left;
         width: 40px;
         height: 40px;
-        border: 1px #ffffff solid;
+        border: none;
         background: #2467a5;
+        box-shadow: 0px 0px 5px #2467a5;
         border-radius: 3px;
+        transition: 0.4s ease;
         color: white;
+        cursor: pointer;
+      }
+      
+      #frame-close:hover, #frame-reload:hover {
+        box-shadow: 0px 0px 20px #2467a5;
       }
 
       #frame-reload {
-        margin-right: 5px;
+        margin-right: 10px;
       }
 
       #preferences-container {
@@ -190,7 +197,7 @@
         background: rgb(255, 255, 255, 0.1);
       }
 
-      #main-input:active, #main-input:hover {
+      #main-input:focus, #main-input:hover {
         background: rgb(255, 255, 255, 0.1);
       }
 
@@ -259,7 +266,7 @@
       <div id="main-page-init">
         <h1 class="main-title">Ludicrous</h1>
         <h3 class="main-desc">Surf the Unblocked Web</h3>
-        <input id="main-input" placeholder="Enter URL or Search Query"><br>
+        <input id="main-input" placeholder="Enter URL or Search Query" list="defaults" autocomplete="off"><br>
         <button class="main-input-button" id="alloy-init">Alloy</button>
         <button class="main-input-button" id="corro-init">Corrosion</button>
         <button class="main-input-button" id="pal-init">Palladium</button>
@@ -276,21 +283,27 @@
     </div>
     <div id="preferences-container"><input class="input" placeholder="Enter Title or Icon URL Here"><button class="settingsbutton" id="title-change">Title</button><button class="settingsbutton" id="icon-change">Icon</button></div>
     <div id="particles-js" style="height: 100vh"></div>
-    <script src='//code.jquery.com/jquery.min.js'></script>
+    <datalist id="defaults">
+      <option value="https://discord.com">Discord</option>
+      <option value="https://reddit.com">Reddit</option>
+      <option value="https://twitch.tv">Twitch</option>
+      <option value="https://youtube.com">Youtube</option>
+      <option value="https://google.com">Google</option>
+    </datalist>
+    <script src='//code.jquery.com/jquery-3.6.0.min.js'></script>
     <script>
       $('#alloy-init').click(() => {
         $('#bg-p')[0].src = ''
-        $('#frame-btns-over').show()
         if (!$('#main-input').val().startsWith('http')) {
-          $('#bg-p')[0].src = '/prox/?url='+btoa('https://google.com/search?q='+$('#main-input').val(), '2'); return $('#bg-p').fadeIn('fast');
+          return location.assign('/prox?url='+btoa('https://google.com/search?q='+$('#main-input').val()));
         }
-        $('#bg-p')[0].src = '/prox?url='+btoa($('#main-input').val())
-        $('#bg-p').fadeIn('fast');
+        location.assign('/prox?url='+btoa($('#main-input').val()))
       })
 
       $('#pal-init').click(() => {
         $('#bg-p')[0].src = ''
         $('#frame-btns-over').show()
+        $("#settings-placeholder").hide()
         if (!$('#main-input').val().startsWith('http')) {
           $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/surf/'+encodeURIComponent(xor('https://google.com/search?q='+$('#main-input').val(), '2')); return $('#bg-p').fadeIn('fast');
         }
@@ -303,6 +316,7 @@
       $('#corro-init').click(() => {
         $('#bg-p')[0].src = ''
         $('#frame-btns-over').show()
+        $("#settings-placeholder").hide()
         if (!$('#main-input').val().startsWith('http')) {
           $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/service/gateway?url='+'https://google.com/search?q='+$('#main-input').val(); return $('#bg-p').fadeIn('fast');
         }
@@ -310,7 +324,7 @@
         $('#bg-p').fadeIn('fast');
       })
 
-      $('#frame-close').click(() => {$('#bg-p').hide();$('#frame-btns-over').hide()})
+      $('#frame-close').click(() => {$('#bg-p').hide();$('#frame-btns-over').hide();$("#settings-placeholder").show()})
 
       $('#frame-reload').click(() => {$('#bg-p')[0].contentWindow.location.reload()})
 
@@ -350,7 +364,7 @@
         document.body.insertAdjacentElement('afterBegin', elem)
       }
 
-      alert2('Palladium is currently down for unknown reasons')
+      //alert2('Palladium is currently down for unknown reasons')
 
       var interval = setInterval(() => {
         try {$('#arc-widget-launcher-iframe')[0].contentWindow.document.querySelector('#launcher').style.background = 'linear-gradient(238deg, #3baeff 1%, #587cff 100%)';clearInterval(interval)} catch(err) {console.log()}
