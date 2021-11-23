@@ -292,7 +292,7 @@
     </datalist>
     <script src='//code.jquery.com/jquery-3.6.0.min.js'></script>
     <script>
-      $('#alloy-init').click(() => {
+      /*$('#alloy-init').click(() => {
         $('#bg-p')[0].src = ''
         if (!$('#main-input').val().startsWith('http')) {
           return location.assign('/prox?url='+btoa('https://google.com/search?q='+$('#main-input').val()));
@@ -322,7 +322,9 @@
         }
         $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/service/gateway?url='+$('#main-input').val()
         $('#bg-p').fadeIn('fast');
-      })
+      })*/
+
+      $('.main-input-button').click(() => {alert('Ludicrous is Experiencing Heavy Load Issues, Please Try Again Later or Use An Alternate Site.\n\nWe Are Sorry for the Inconvenience')})
 
       $('#frame-close').click(() => {$('#bg-p').hide();$('#frame-btns-over').hide();$("#settings-placeholder").show()})
 
