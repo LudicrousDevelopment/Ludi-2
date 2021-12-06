@@ -20,7 +20,7 @@ const Corrosion = new (require('./lib/server/index.js'))({
 })
 const Palladium = new (require('./p/server'))({
   encode: 'xor',
-  ssl: 'true',
+  ssl: true,
   prefix: prefix,
   server: https,
   Corrosion: [true, Corrosion],
