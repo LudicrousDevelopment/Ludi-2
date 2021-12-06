@@ -5,6 +5,17 @@ class Base {
     this.ctx = ctx
   }
   url(url, ext) { 
+    if (typeof window == 'undefined') {
+      function co(num) { return (num % 2)==1;}
+      var headers = this.ctx.req.rawHeaders || []
+      var fullHeaders = {}
+      headers.map((e, ind) => {
+        if (co(ind+1)) {
+          fullHeaders[e] = headers[ind+1]
+        }
+      })
+    }
+    var hostname = ((fullHeaders||{})['Host']||location.hostname)
     url = url.toString()
     if (url.match(/^(javascript:|about:|mailto:|data:|blob:|#)/gi)) return url
     url = url.replace(/^\/\//, 'https://')
@@ -36,9 +47,13 @@ class Base {
     if(new URL(url).protocol.startsWith('ws')) {
       console.log(new URLSearchParams(new URL(url).search))
     }
-
     if (url.includes('https://')) url = url.replace('https://', 'https:/')
-    if (!ext) return this.ctx.prefix + this.ctx.encoding.encode(url)
+    var test = 'https://'+hostname+this.ctx.prefix + this.ctx.encoding.encode(url.replace('../', '').replace('./', '').replace('http://', 'https://'))
+    test = this.ctx.encoding.decode(test.split(this.ctx.prefix)[1])
+    if (test.includes(this.ctx.prefix)) {
+      url = this.ctx.encoding.decode(test.split(this.ctx.prefix)[1])
+    }
+    if (!ext) return 'https://'+hostname+this.ctx.prefix + this.ctx.encoding.encode(url.replace('../', '').replace('./', '').replace('http://', 'https://'))
     return this.ctx.prefix + ext + this.ctx.encoding.encode(url)
   }
   element(attr, ext) {

@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+var https = require('http').Server()
 var fs = require('fs')
 
 var alloy = require('./a');
@@ -12,24 +13,23 @@ atob = str => new Buffer.from(str, 'base64').toString('utf-8')
 btoa = str => new Buffer.from(str, 'utf-8').toString('base64')
 
 const Alloy = new alloy(alloyprefix)
-const Palladium = new (require('./p/server'))({
-  encode: 'xor',
-  ssl: 'true',
-  prefix: prefix,
-})
 const Corrosion = new (require('./lib/server/index.js'))({
   codec: 'xor',
   forceHttps: true,
   prefix: '/service/',
 })
+const Palladium = new (require('./p/server'))({
+  encode: 'xor',
+  ssl: 'true',
+  prefix: prefix,
+  server: https,
+  Corrosion: [true, Corrosion],
+})
 
 Corrosion.bundleScripts()
 
-var https = require('http').Server()
-
-https.on('upgrade', (req, socket, head) => Corrosion.upgrade(req, socket, head))
-
 https.on('request', (req, res) => {
+  req.headers.useragent === 'googlebot' && res.writeHead(403).end();
   req.query = {};
   (req.url.split('?').map(e => e.split('&'))[1]||[]).map(e => e.includes('=')?req.query[e.split('=')[0]]=e.split('=')[1]:null)
   if (req.url.startsWith(Corrosion.prefix)) {
@@ -49,11 +49,10 @@ https.on('request', (req, res) => {
   //res.writeHead(301, {location: '/'}).end('')
 })
 
-//Palladium.ws(https);
-Palladium.clientScript();
+Palladium.init();
 
 //Alloy.ws(https)
 
 https.listen(process.env.PORT || port, () => {
-  console.log('server started');
+  console.log('https://localhost:'+(process.env.PORT || port));
 });
