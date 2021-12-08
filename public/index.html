@@ -335,10 +335,10 @@
         $('#bg-p')[0].src = ''
         if (!$('#main-input').val().startsWith('http')) {
           $('#bg-p').fadeIn('fast');
-          return $('#bg-p')[0].src = ('https://a.'+location.hostname+'/main/'+'https://google.com/search?q='+$('#main-input').val());
+          return $('#bg-p')[0].src = ('http://a.'+location.hostname+'/main/'+'https://google.com/search?q='+$('#main-input').val());
         }
         $('#bg-p').fadeIn('fast');
-        $('#bg-p')[0].src = ('https://a.'+location.hostname+'/main/'+$('#main-input').val())
+        $('#bg-p')[0].src = ('http://a.'+location.hostname+'/main/'+$('#main-input').val())
       })
 
       $('#pal-init').click(() => {
