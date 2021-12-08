@@ -291,7 +291,7 @@
         <h1 class="main-title">Ludicrous</h1>
         <h3 class="main-desc">Surf the Unblocked Web</h3>
         <input id="main-input" placeholder="Enter URL or Search Query" list="defaults" autocomplete="off"><br>
-        <button class="main-input-button canc" id="alloy-init">Alloy</button>
+        <button class="main-input-button canc" id="alloy-init">Womginx</button>
         <button class="main-input-button canc" id="corro-init">Corrosion</button>
         <button class="main-input-button canc" id="pal-init">Palladium</button>
       </div>
@@ -334,9 +334,9 @@
       $('#alloy-init').click(() => {
         $('#bg-p')[0].src = ''
         if (!$('#main-input').val().startsWith('http')) {
-          return location.assign('/prox?url='+btoa('https://google.com/search?q='+$('#main-input').val()));
+          return location.assign('https://a.'+location.hostname+'/main/'+'https://google.com/search?q='+$('#main-input').val());
         }
-        location.assign('/prox?url='+btoa($('#main-input').val()))
+        location.assign('https://a.'+location.hostname+'/main/'+$('#main-input').val())
       })
 
       $('#pal-init').click(() => {
