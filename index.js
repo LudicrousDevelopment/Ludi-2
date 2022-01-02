@@ -12,6 +12,7 @@ btoa = str => new Buffer.from(str, 'utf-8').toString('base64')
 
 const Corrosion = new (require('./lib/server/index.js'))({
   codec: 'xor',
+  requestMiddleware: [require('./lib/server/index.js').middleware.https()],
   forceHttps: true,
   prefix: '/service/',
 })
