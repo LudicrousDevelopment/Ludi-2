@@ -43,6 +43,7 @@ https.on('request', (req, res) => {
     else var contentType = 'text/html; charset=utf-8'
     
     res.writeHead(200, {'content-type': contentType}).end(fs.readFileSync('./public'+req.url.split('?')[0].split('#')[0]))
+    console.log(req.url.split('?')[0].split('#')[0])
   }
   //res.writeHead(301, {location: '/'}).end('')
 })
