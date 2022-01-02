@@ -4,8 +4,6 @@ const app = express();
 var https = require('http').Server()
 var fs = require('fs')
 
-var alloy = require('./a');
-
 const {port, prefix, alloyprefix} = require('./config.json');
 
 atob = str => new Buffer.from(str, 'base64').toString('utf-8')
