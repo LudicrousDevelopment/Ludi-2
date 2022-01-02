@@ -15,7 +15,7 @@ class Base {
         }
       })
     }
-    var hostname = ((fullHeaders||{})['Host']||location.hostname)
+    var hostname = ((fullHeaders||{})['host']||location.hostname)
     url = url.toString()
     if (url.match(/^(javascript:|about:|mailto:|data:|blob:|#)/gi)) return url
     url = url.replace(/^\/\//, 'https://')
