@@ -4,6 +4,8 @@ var https = require('https');
 
 module.exports = function Request(req, res, ctx) {
 
+  //req.headers['user-agent']=='googlebot' && return(res.writeHead(403).end('Unauthorized'))
+
   ctx.requestMiddlewares.forEach((func) => {
     var octx = ctx
     try {ctx = eval(func)(ctx);if(!ctx)ctx=octx;} catch(err) {ctx=octx;console.log('Request Middleware Error: '+err)}
@@ -160,8 +162,6 @@ module.exports = function Request(req, res, ctx) {
         'strict-transport-security',
         'x-frame-options',
       ].forEach(name => delete response.headers[name]);
-
-      response.headers['access-control-allow-origin'] = '*'
 
       //try {sendData = sendData.replace(/Function\.prototype\.apply\.call/gi, 'Function.prototype.call')} catch {}
 

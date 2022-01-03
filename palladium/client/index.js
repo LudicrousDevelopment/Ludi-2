@@ -69,6 +69,7 @@ var encoding = (ctx) => {
 
 if (typeof module !== undefined) module.exports = encoding;
 const oFetch = window.fetch,
+  XHR = window.XMLHttpRequest,
   oXHR = window.XMLHttpRequest.prototype.open,
   oPMessage = window.postMessage,
   oSBeacon = window.Navigator.prototype.sendBeacon;
@@ -86,6 +87,11 @@ var ctx = {
 ctx.encoding = encoding(ctx)
 
 window.fetch = function(url, opts) {
+  if (typeof url == 'object') {
+    opts = url
+    url = url.url
+    return oFetch.apply(this, arguments)
+  }
   if (url) url = new Base(ctx).url(url)
   return oFetch.apply(this, arguments)
 }
@@ -178,6 +184,24 @@ window.RTCPeerConnection = new Proxy(RTCPeerConnection, {
       console.warn("STUN connections aren't supported!");
   }
 });*/
+
+window.Worker = new Proxy(window.Worker, {
+  construct: (target, args) => {
+    if (args[0])  {
+      if (args[0].trim().startsWith(`blob:${pLocation.origin}`)) {
+        const xhr = new XHR
+        xhr.open('GET', args[0], false);
+        xhr.send();
+        const script = new JSRewriter(ctx)(xhr.responseText, ctx.location.origin + args[0].trim().slice(`blob:${ctx.window.location.origin}`.length), ctx);
+        const blob = new Blob([ script ], { type: 'application/javascript' });
+        args[0] = URL.createObjectURL(blob);
+      } else {
+        args[0] = new Base(ctx).url(args[0]);
+      };
+    };
+    return Reflect.construct(target, args);
+  },
+}); 
 function blackList(list, reason = 'Website Blocked') {
   return (ctx) => {
     try {if(list.indexOf(new URL(ctx.url).hostname)>-1) {
@@ -205,6 +229,15 @@ function force(ctx) {
 if (!typeof module !== undefined) module.exports.blackList = blackList;
 if (typeof module !== undefined) module.exports.force = force;
 module.exports.allow = allow;
+class JSRewriter {
+  constructor(data, ctx) {
+    return function JS(data, ctx) {
+      return data.toString().replace(/(,| |=|\()document.location(,| |=|\)|\.)/gi, str => { return str.replace('.location', `.pLocation`); }).replace(/(,| |=|\()window.location(,| |=|\)|\.)/gi, str => { return str.replace('.location', `.pLocation`); })/*.replace(/(,| |=|\()location(,| |=|\)|\.)/gi, str => { return str.replace('location', `pLocation`); })*/.replace('myScript=scripts[index]||', 'myScript=')//.replace(/(localStorage|sessionStorage)/g, '_$1')//.replace(/location\s*=\s*/gi, 'PLocation = ')//.replace(/location\.([a-zA-Z0-9]*)/gi, 'pLocation.$1')//.replace(/\.href\s*=(["'` ]*)([a-zA-Z0-9]*)(['`" ]*)/gi, (match, p1, p2, p3) => {return '.phref = '+p1+new ctx.rewrite.Base(ctx).url(p2)+p3})
+    }
+  }
+}
+
+if (typeof module !== undefined) module.exports = JSRewriter
 //Client and Server Side
 
 class Base {
@@ -222,8 +255,16 @@ class Base {
         }
       })
     }
-    var hostname = ((fullHeaders||{})['host']||location.hostname)
-    url = url.toString()
+    var hostname = ((fullHeaders||{})['Host']||location.hostname)
+    if (!url) return url
+    /*
+    if (typeof url == 'object') {
+      throw new Error('no')
+      var object = url
+      console.log(object)
+      url = url.url
+    }*/
+    url = (url).toString()
     if (url.match(/^(javascript:|about:|mailto:|data:|blob:|#)/gi)) return url
     url = url.replace(/^\/\//, 'https://')
 
@@ -242,7 +283,7 @@ class Base {
     if (!this.ctx.encode==='base64') {
       url = this.ctx.encoding.decode(url)
     }
-    if (url.startsWith(this.ctx.prefix)) return url
+    if (url.startsWith(this.ctx.prefix)) return url;
     if (!url.startsWith('http')) {
       try {
         var host = new URL(this.ctx.url).hostname
@@ -255,12 +296,13 @@ class Base {
       console.log(new URLSearchParams(new URL(url).search))
     }
     if (url.includes('https://')) url = url.replace('https://', 'https:/')
-    var test = 'https://'+hostname+this.ctx.prefix + this.ctx.encoding.encode(url.replace('../', '').replace('./', '').replace('http://', 'https://'))
+    /*var test = 'https://'+hostname+this.ctx.prefix + this.ctx.encoding.encode(url.replace('../', '').replace('./', '').replace('http://', 'https://'))
     test = this.ctx.encoding.decode(test.split(this.ctx.prefix)[1])
     if (test.includes(this.ctx.prefix)) {
       url = this.ctx.encoding.decode(test.split(this.ctx.prefix)[1])
-    }
-    if (!ext) return 'https://'+hostname+this.ctx.prefix + this.ctx.encoding.encode(url.replace('../', '').replace('./', '').replace('http://', 'https://'))
+    }*/
+    var eslash = url.endsWith('/') ? '/' : ''
+    if (!ext) return /*'https://'+hostname+*/this.ctx.prefix + this.ctx.encoding.encode(url.replace('../', '').replace('./', '').replace('http://', 'https://'))+eslash
     return this.ctx.prefix + ext + this.ctx.encoding.encode(url)
   }
   element(attr, ext) {
@@ -320,10 +362,10 @@ var pushstates = history.pushState;
 
 window.history.pushState = new Proxy(history.pushState, {
   apply(target, thisArg, args) {
-    args[2] = new Base(ctx).url(args[2])
-    return Reflect.apply(target, thisArg, args)
+  args[2] = new Base(ctx).url(args[2])
+  return Reflect.apply(target, thisArg, args)
   }
-})
+});
 
 window.history.replaceState = new Proxy(history.replaceState, {
   apply(target, thisArg, args) {
@@ -366,6 +408,20 @@ window.Worker = new Proxy(window.Worker, {
     return Reflect.construct(target, args);
   }
 });
+
+if (config.title) {
+  var oTitle = Object.getOwnPropertyDescriptor(Document.prototype, 'title');
+  document.title = config.title
+  Object.defineProperty(Document.prototype, 'title', {
+    set(value) {
+      oTitle = config.title
+      return value
+    },
+    get() {
+      return config.title
+    }
+  })
+}
 
 if (location.search && !(new URLSearchParams(location.search).get('palladium-redir'))) {
   var p1 = ctx.encoding.decode(location.pathname.split(config.prefix)[1])
@@ -517,6 +573,13 @@ Element.prototype.insertAdjacentHTML = function(place, text) {
   return inserthtmlproto.apply(this, arguments)
 }
 
+window.Document.prototype.writeln = new Proxy(window.Document.prototype.writeln, {
+  apply: (target, that , args) => {
+    if (args.length) args = [ ctx.html.process(args.join(''), ctx.meta) ];
+    return Reflect.apply(target, that, args);
+  },
+});
+
 var docWriteHTML = document.write
 
 window.Document.prototype.write = function() {
@@ -542,6 +605,13 @@ window.Document.prototype.write = function() {
   }
   return docWriteHTML.apply(this, arguments)
 }
+
+window.Audio = new Proxy(window.Audio, {
+  construct: (target, args) => {
+    if (args[0]) args[0] = new Base(ctx).url(args[0])
+    return Reflect.construct(target, args);
+  },
+});
 
 //Function.prototype.apply.call = function() {return Function.prototype.call.apply(this, arguments)}
 

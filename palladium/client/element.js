@@ -143,6 +143,13 @@ Element.prototype.insertAdjacentHTML = function(place, text) {
   return inserthtmlproto.apply(this, arguments)
 }
 
+window.Document.prototype.writeln = new Proxy(window.Document.prototype.writeln, {
+  apply: (target, that , args) => {
+    if (args.length) args = [ ctx.html.process(args.join(''), ctx.meta) ];
+    return Reflect.apply(target, that, args);
+  },
+});
+
 var docWriteHTML = document.write
 
 window.Document.prototype.write = function() {
@@ -168,6 +175,13 @@ window.Document.prototype.write = function() {
   }
   return docWriteHTML.apply(this, arguments)
 }
+
+window.Audio = new Proxy(window.Audio, {
+  construct: (target, args) => {
+    if (args[0]) args[0] = new Base(ctx).url(args[0])
+    return Reflect.construct(target, args);
+  },
+});
 
 //Function.prototype.apply.call = function() {return Function.prototype.call.apply(this, arguments)}
 

@@ -16,8 +16,8 @@ const Corrosion = new (require('./lib/server/index.js'))({
   forceHttps: true,
   prefix: '/service/',
 })
-const Palladium = new (require('./p/server'))({
-  encode: 'xor',
+const Palladium = new (require('./palladium/server'))({
+  encode: 'plain',
   ssl: true,
   prefix: prefix,
   server: https,

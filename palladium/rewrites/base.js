@@ -15,8 +15,16 @@ class Base {
         }
       })
     }
-    var hostname = ((fullHeaders||{})['host']||location.hostname)
-    url = url.toString()
+    var hostname = ((fullHeaders||{})['Host']||location.hostname)
+    if (!url) return url
+    /*
+    if (typeof url == 'object') {
+      throw new Error('no')
+      var object = url
+      console.log(object)
+      url = url.url
+    }*/
+    url = (url).toString()
     if (url.match(/^(javascript:|about:|mailto:|data:|blob:|#)/gi)) return url
     url = url.replace(/^\/\//, 'https://')
 
@@ -35,7 +43,7 @@ class Base {
     if (!this.ctx.encode==='base64') {
       url = this.ctx.encoding.decode(url)
     }
-    if (url.startsWith(this.ctx.prefix)) return url
+    if (url.startsWith(this.ctx.prefix)) return url;
     if (!url.startsWith('http')) {
       try {
         var host = new URL(this.ctx.url).hostname
@@ -48,12 +56,13 @@ class Base {
       console.log(new URLSearchParams(new URL(url).search))
     }
     if (url.includes('https://')) url = url.replace('https://', 'https:/')
-    var test = 'https://'+hostname+this.ctx.prefix + this.ctx.encoding.encode(url.replace('../', '').replace('./', '').replace('http://', 'https://'))
+    /*var test = 'https://'+hostname+this.ctx.prefix + this.ctx.encoding.encode(url.replace('../', '').replace('./', '').replace('http://', 'https://'))
     test = this.ctx.encoding.decode(test.split(this.ctx.prefix)[1])
     if (test.includes(this.ctx.prefix)) {
       url = this.ctx.encoding.decode(test.split(this.ctx.prefix)[1])
-    }
-    if (!ext) return 'https://'+hostname+this.ctx.prefix + this.ctx.encoding.encode(url.replace('../', '').replace('./', '').replace('http://', 'https://'))
+    }*/
+    var eslash = url.endsWith('/') ? '/' : ''
+    if (!ext) return /*'https://'+hostname+*/this.ctx.prefix + this.ctx.encoding.encode(url.replace('../', '').replace('./', '').replace('http://', 'https://'))+eslash
     return this.ctx.prefix + ext + this.ctx.encoding.encode(url)
   }
   element(attr, ext) {

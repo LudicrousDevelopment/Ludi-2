@@ -66,7 +66,6 @@ module.exports = class WebSocket {
                 cli.close()
               }
             } else if (req.url.startsWith(ctx.Corrosion[1].prefix)) {
-              if (req.url==ctx.Corrosion[1].prefix+'hvtrs8%2F-rgmmtg-cuvh%2Fgctgwcy%2Cdksaopd%2Cge%2F%3Dv%3F1/?origin=https://discord.com') return $QR(cli, req)
               try {new URL(ctx.Corrosion[1].url.unwrap(req.url))} catch(err) {return cli.close()}
               var url = ctx.Corrosion[1].url.unwrap(req.url).replace(/^http/g, 'ws')
               var wsProxy = new ws(url)
@@ -79,7 +78,6 @@ module.exports = class WebSocket {
                   wsProxy.send(message.toString())
                 })
                 wsProxy.on('message', message => {
-                  console.log('message')
                   message = message.toString().includes('�') ? message : message.toString()
                   cli.send(message)
                 })
@@ -92,31 +90,5 @@ module.exports = class WebSocket {
         }
       }
     }
-  }
-}
-
-function $QR(cli, req) {
-  try {
-    req.url = '?ws=wss://remote-auth-gateway.discord.gg/?v=1&origin=https://discord.com'
-    var proxyURL = req.url.split('?ws=')[1].replace(this.prefix, '')
-    try {new URL(proxyURL)} catch(err) {return cli.close()}
-    var wsProxy = new ws(proxyURL, {
-      origin: proxyURL.split('&origin=')[1]
-    })
-    wsProxy.on('error', () => cli.terminate())
-    cli.on('error', () => wsProxy.terminate())
-    wsProxy.on('close', () => cli.close())
-    cli.on('close', () => wsProxy.close())
-    wsProxy.on('open', () => {
-      cli.on('message', message => {
-        wsProxy.send(message.toString())
-      })
-      wsProxy.on('message', message => {
-        message = message.toString().includes('�') ? message : message.toString()
-        cli.send(message)
-      })
-    })
-  } catch {
-    cli.close()
   }
 }

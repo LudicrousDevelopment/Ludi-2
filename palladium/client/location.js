@@ -43,10 +43,10 @@ var pushstates = history.pushState;
 
 window.history.pushState = new Proxy(history.pushState, {
   apply(target, thisArg, args) {
-    args[2] = new Base(ctx).url(args[2])
-    return Reflect.apply(target, thisArg, args)
+  args[2] = new Base(ctx).url(args[2])
+  return Reflect.apply(target, thisArg, args)
   }
-})
+});
 
 window.history.replaceState = new Proxy(history.replaceState, {
   apply(target, thisArg, args) {
@@ -89,6 +89,20 @@ window.Worker = new Proxy(window.Worker, {
     return Reflect.construct(target, args);
   }
 });
+
+if (config.title) {
+  var oTitle = Object.getOwnPropertyDescriptor(Document.prototype, 'title');
+  document.title = config.title
+  Object.defineProperty(Document.prototype, 'title', {
+    set(value) {
+      oTitle = config.title
+      return value
+    },
+    get() {
+      return config.title
+    }
+  })
+}
 
 if (location.search && !(new URLSearchParams(location.search).get('palladium-redir'))) {
   var p1 = ctx.encoding.decode(location.pathname.split(config.prefix)[1])

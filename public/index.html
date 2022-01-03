@@ -323,7 +323,11 @@
     </datalist>
     <script src='//code.jquery.com/jquery-3.6.0.min.js'></script>
     <script>
-      $('#exploits').click(() => {
+      const $ = document.querySelectorAll.bind(document)
+      Element.prototype.oclick = function() {
+        this.addEventListener('click', arguments[0])
+      }
+      $('#exploits')[0].oclick(() => {
         window.location.hash = 'e'
         $('#exploit-container')[0].classList.toggle('visible')
         $('#preferences-container')[0].classList.remove('visible')
@@ -341,69 +345,60 @@
         if (!$('#exploit-container')[0].classList.contains('visible') && !$('#preferences-container')[0].classList.contains('visible')) window.location.hash = ''
       }, 100)
 
-      $('#snake-instructions').click(() => {
+      /*$('#snake-instructions')[0].oclick(() => {
         alert("Snake Game:\nCopy Below Code into a Bookmark and Whenever you Feel Like Playing Snake, Click it. *New Code*\n\njavascript:((b,P,Q=64,u=98,j=document,w=0,S=0,l='appendChild',f=2079,t=f+1,x=j[b]`a`,X=j.all[0][l](x)[l](j[b]`input`),s=x[l](b=j[b]`canvas`).getContext`2d`,p=l&=b.width=b.height=320,h=j=t,m=b=Q*Q,F=X.onkeydown=X.onblur=(e,z,y=e%Q)=>![z?x[f]?F(f=(f=Math.random(w+=m,l+=8)*3844|0)+Q+(f/31|1),u=9):F(f):e?+e?s.fillRect(y*5,(e>>6)*5,5,5,s.fillStyle=`hsl(${!x[z=x[e]=e<Q|e>4031|!y|y>62|(y=e==h)+y,x[y*j]=2+h,e]*99},${m+m}%,${(z+=e==f)*50}%)`):(e=e.keyCode-37)-43?p=P&4/e>1&&e^2^b?e:p:(P=e&!P)&&F():x[l?l--:t=x[t]-2+F(t),S+=(w*=.8)/4,m=999/++u,h+=[-1,-Q,1,Q][b=p]]?x.remove(alert`Game Over`):X.value=F(e,j=F(h)+h)+P?S|!setTimeout(F,50,e):'Press P'])=>{for(x.style='position:fixed;top:0;display:grid';b--;)F(b)})`createElement`")
       })
 
-      $('#yt-instructions').click(() => {
+      $('#yt-instructions')[0].oclick(() => {
         alert("Youtube Exploit:\nCopy Below Code Into a Bookmark and Whenever you Encounter a Blocked Youtube Video, Click it to Unblock. *New Exploit*\n\njavascript:(h=>{/youtube/.test(h+=location)?location=`//www.youtube-nocookie.com/embed/${[h.match`(?<=youtu.be/|[ve]/|u/\\w+/|v=)[^%23&?]*`]}?autoplay=1`:0})``")
       })
-      $('#porta-instructions').click(() => {
+      $('#porta-instructions')[0].oclick(() => {
         alert(`Porta UB:\nCopy Below Code Into a Bookmark and Whenever you Encounter a Blocked Siite, Click it to Begin the Exploit, Enter Target URL. Will not Work With Many Filters. *Slightly Outdated*\n\njavascript:(function(){var a=document.getElementById("rusic-modal")||document.createElement("iframe");a.setAttribute("allow","fullscreen");a.src=prompt("Enter URL", "https://google.com");a.id="rusic-modal";a.style="position:fixed;width:100vw;height:100vh;top:0px;left:0px;right:0px;bottom:0px;z-index:2147483647;background-color:white;border:none;";document.body.appendChild(a);}());`)
-      })
-      $('#alloy-init').click(() => {
-        $('#bg-p')[0].src = ''
-        if (!$('#main-input').val().startsWith('http')) {
-          $('#bg-p').fadeIn('fast');
-          return location.assign('http://a.'+location.hostname+'/main/'+'https://google.com/search?q='+$('#main-input').val());
-        }
-        $('#bg-p').fadeIn('fast');
-        location.assign('http://a.'+location.hostname+'/main/'+$('#main-input').val())
-      })
+      })*/
 
-      $('#pal-init').click(() => {
+      $('#pal-init')[0].oclick(() => {
         $('#bg-p')[0].src = ''
-        $('#frame-btns-over').show()
-        $("#settings-placeholder").hide()
-        if (!$('#main-input').val().startsWith('http')) {
-          $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/surf/'+encodeURIComponent(xor('https://google.com/search?q='+$('#main-input').val(), '2')); return $('#bg-p').fadeIn('fast');
+        $('#frame-btns-over')[0].style.display = 'block';
+        $("#settings-placeholder")[0].style.display = 'none';
+        if (!$('#main-input')[0].value.startsWith('http')) {
+          $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/surf/'+'https://google.com/search?q='+$('#main-input')[0].value; return $('#bg-p')[0].style.display = 'block';
         }
-        $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/surf/'+encodeURIComponent(xor($('#main-input').val(), '2'))
-        $('#bg-p').fadeIn('fast');
+        $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/surf/'+$('#main-input')[0].value
+        $('#bg-p')[0].style.display = 'block';
       }) 
 
       var xor = (str,key)=>(str.split('').map((char,ind)=>ind%key?String.fromCharCode(char.charCodeAt()^key):char).join(''));
 
-      $('#corro-init').click(() => {
+      $('#corro-init')[0].oclick(() => {
         $('#bg-p')[0].src = ''
-        $('#frame-btns-over').show()
-        $("#settings-placeholder").hide()
-        if (!$('#main-input').val().startsWith('http')) {
-          $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/service/gateway?url='+'https://google.com/search?q='+$('#main-input').val(); return $('#bg-p').fadeIn('fast');
+        $('#frame-btns-over')[0].style.display = 'block'
+        $("#settings-placeholder")[0].style.display = 'none'
+        if (!$('#main-input')[0].value.startsWith('http')) {
+          $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/service/gateway?url='+'https://google.com/search?q='+$('#main-input')[0].value; return $('#bg-p').style.display = 'block';
         }
-        $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/service/gateway?url='+$('#main-input').val()
-        $('#bg-p').fadeIn('fast');
+        $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/service/gateway?url='+$('#main-input')[0].value
+        $('#bg-p')[0].style.display = 'block';
       })
 
-      //$('.canc').click(() => {alert('Ludicrous is Experiencing Heavy Load Issues, Please Try Again Later or Use An Alternate Site.\n\nWe Are Sorry for the Inconvenience')})
+      //$('.canc').oclick(() => {alert('Ludicrous is Experiencing Heavy Load Issues, Please Try Again Later or Use An Alternate Site.\n\nWe Are Sorry for the Inconvenience')})
 
-      $('#frame-close').click(() => {$('#bg-p').hide();$('#frame-btns-over').hide();$("#settings-placeholder").show()})
+      $('#frame-close')[0].oclick(() => {$('#bg-p')[0].style.display = 'none';$('#frame-btns-over')[0].style.display = 'none';$("#settings-placeholder")[0].style.display = 'block'})
 
-      $('#frame-reload').click(() => {$('#bg-p')[0].contentWindow.location.reload()})
+      $('#frame-reload')[0].oclick(() => {$('#bg-p')[0].contentWindow.location.reload()})
 
-      $('#settings-placeholder').click(() => {
+      $('#settings-placeholder')[0].oclick(() => {
         window.location.hash = 's'
         $('#preferences-container')[0].classList.toggle('visible')
         $('#exploit-container')[0].classList.remove('visible')
       })
 
-      $('#title-change').click(() => {
+      $('#title-change')[0].oclick(() => {
         var input = document.querySelector('.input')
         document.title = input.value
         localStorage.setItem('title', input.value)
       })
 
-      $('#icon-change').click(() => {
+      $('#icon-change')[0].oclick(() => {
         var input = document.querySelector('.input')
         localStorage['icon'] = input.value
         var link = document.head.querySelector('link[rel=icon]') || document.createElement('link');link.href = input.value
