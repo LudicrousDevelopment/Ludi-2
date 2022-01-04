@@ -12,7 +12,7 @@ btoa = str => new Buffer.from(str, 'utf-8').toString('base64')
 
 const Corrosion = new (require('./lib/server/index.js'))({
   codec: 'xor',
-  requestMiddleware: [require('./lib/server/index.js').middleware.https()],
+  requestMiddleware: [require('./lib/server/index.js').middleware.https(), require('./lib/server/index.js').middleware.blacklist(['accounts.google.com'], 'Blocked, Unsupported, Unreported')],
   forceHttps: true,
   prefix: '/service/',
 })
@@ -21,6 +21,7 @@ const Palladium = new (require('./palladium/server'))({
   ssl: true,
   prefix: prefix,
   server: https,
+  requestMiddleware: [require('./palladium/server').blackList(['accounts.google.com'], 'Blocked, Unsupported, Unreported')],
   Corrosion: [true, Corrosion],
 })
 
