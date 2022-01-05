@@ -379,7 +379,7 @@
         $('#frame-btns-over')[0].style.display = 'block'
         $("#settings-placeholder")[0].style.display = 'none'
         if (!$('#main-input')[0].value.startsWith('http')) {
-          $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/service/gateway?url='+'https://google.com/search?q='+$('#main-input')[0].value; return $('#bg-p').style.display = 'block';
+          $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/service/gateway?url='+'https://google.com/search?q='+$('#main-input')[0].value; return $('#bg-p')[0].style.display = 'block';
         }
         $('#bg-p')[0].src = location.protocol+'//'+window.location.host+'/service/gateway?url='+$('#main-input')[0].value
         $('#bg-p')[0].style.display = 'block';
