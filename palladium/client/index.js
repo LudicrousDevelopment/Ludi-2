@@ -255,7 +255,7 @@ class Base {
         }
       })
     }
-    var hostname = ((fullHeaders||{})['Host']||location.hostname)
+    var hostname = ((fullHeaders||{})['Host']||(fullHeaders||{})['host']||location.hostname)
     if (!url) return url
     /*
     if (typeof url == 'object') {
