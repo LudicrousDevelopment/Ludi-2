@@ -1,5 +1,5 @@
 var { JSDOM } = require('jsdom')
-var regex = /(srcset|src|href|action|integrity|nonce|http-equiv)\s*=\s*['`"](.*?)['"`]/gi
+var regex = /srcset\s*=\s*['`"](.*?)['"`]/gi
 
 module.exports = class HTMLRewriter {
   constructor(data, ctx) {
@@ -83,7 +83,7 @@ module.exports = class HTMLRewriter {
       function RewriteSrcset(sample) {
         return sample.split(',').map(e => {
           return(e.split(' ').map(a => {
-            if (a.startsWith('http')) {
+            if (a.startsWith('http')||a.startsWith('/')) {
               var url = new ctx.rewrite.Base(ctx).url(a)
             }
             return a.replace(a, (url||a))
@@ -98,13 +98,13 @@ module.exports = class HTMLRewriter {
         document.querySelector('head').insertBefore(e, document.querySelector('head').childNodes[0])
       }
 
-      InjectScript()
+      InjectScript();
 
       ctx.responseText = html.serialize()
 
       ctx.httpResponse.text = ctx.responseText
 
-      return html.serialize()
+      return html.serialize();
     }
   }
 }
