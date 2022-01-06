@@ -304,6 +304,7 @@
         <input id="main-input" placeholder="Enter URL or Search Query" list="defaults" autocomplete="off"><br>
         <button class="main-input-button canc" id="corro-init">Corrosion</button>
         <button class="main-input-button canc" id="pal-init">Palladium</button>
+        <button class="main-input-button canc" id="res-init">Restore Session</button>
       </div>
       <a id="main-discord-widget" href="https://discord.com"></a>
     </div>
@@ -330,6 +331,9 @@
       const $ = document.querySelectorAll.bind(document)
       Element.prototype.oclick = function() {
         this.addEventListener('click', arguments[0])
+      }
+      onbeforeunload = function(e) {
+        if ($('#bg-p')[0].src!='' && $('#bg-p')[0].style.display == 'block') sessionStorage.setItem('session-restore-ludicrous', $('#bg-p')[0].contentWindow.location.href)
       }
       $('#exploits')[0].oclick(() => {
         window.location.hash = 'e'
@@ -364,6 +368,17 @@
         alert(`Porta UB:\nCopy Below Code Into a Bookmark and Whenever you Encounter a Blocked Siite, Click it to Begin the Exploit, Enter Target URL. Will not Work With Many Filters. *Slightly Outdated*\n\njavascript:(function(){var a=document.getElementById("rusic-modal")||document.createElement("iframe");a.setAttribute("allow","fullscreen");a.src=prompt("Enter URL", "https://google.com");a.id="rusic-modal";a.style="position:fixed;width:100vw;height:100vh;top:0px;left:0px;right:0px;bottom:0px;z-index:2147483647;background-color:white;border:none;";document.body.appendChild(a);}());`)
       })*/
 
+      if (sessionStorage['session-restore-ludicrous']) {
+        window.ver = sessionStorage['session-restore-ludicrous']
+        sessionStorage.removeItem('session-restore-ludicrous')
+      }
+
+      $('#res-init')[0].oclick(() => {
+        if (window.ver) $('#bg-p')[0].src = window.ver
+        $('#bg-p')[0].classList.toggle('visible')
+        $('#frame-btns-over')[0].classList.toggle('visible')
+      })
+
       $('#pal-init')[0].oclick(() => {
         $('#bg-p')[0].src = ''
         $('#frame-btns-over')[0].style.display = 'block';
@@ -390,7 +405,7 @@
 
       //$('.canc').oclick(() => {alert('Ludicrous is Experiencing Heavy Load Issues, Please Try Again Later or Use An Alternate Site.\n\nWe Are Sorry for the Inconvenience')})
 
-      $('#frame-close')[0].oclick(() => {$('#bg-p')[0].style.display = 'none';$('#frame-btns-over')[0].style.display = 'none';$("#settings-placeholder")[0].style.display = 'block'})
+      $('#frame-close')[0].oclick(() => {$('#bg-p')[0].style.display = 'none';$('#frame-btns-over')[0].style.display = 'none';$("#settings-placeholder")[0].style.display = 'block';$('#frame-btns-over')[0].classList.remove('visible');$('#bg-p')[0].classList.remove('visible')})
 
       $('#frame-reload')[0].oclick(() => {$('#bg-p')[0].contentWindow.location.reload()})
 
@@ -432,7 +447,7 @@
         document.body.insertAdjacentElement('afterBegin', elem)
       }
 
-      if (location.href.includes('//ludicrous.gq')) alert2('Warning: <span class="embedtext">You are Using a Legacy Domain. Please Relocate to a Newer Location <a href="https://ridgethread.com">Here</a></span>'); else alert2('<span class="embedtext">Welcome to Ludicrous!</span>')
+      if (location.href.includes('//ludicrous.gq')) alert2('Warning: <span class="embedtext">You are Using a Legacy Domain. Please Relocate to a Newer Location <a href="https://ridgethread.com">Here</a></span>'); else ;//alert2('<span class="embedtext">Welcome to Ludicrous!</span>')
 
       var interval = setInterval(() => {
         var filter = 'filter: hue-rotate(180deg)'
